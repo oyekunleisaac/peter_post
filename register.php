@@ -1,51 +1,134 @@
+
+<?php
+// Check if the form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Retrieve form data
+    $firstName = $_POST['firstname'];
+    $lastName = $_POST['lastname'];
+    $matricNumber = $_POST['matricnumber'];
+    $department = $_POST['department'];
+    $level = $_POST['level'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+
+    // Validate and sanitize the form data (you can customize the validation as per your requirements)
+    $firstName = validateInput($firstName);
+    $lastName = validateInput($lastName);
+    $matricNumber = validateInput($matricNumber);
+    $department = validateInput($department);
+    $level = validateInput($level);
+    $email = validateInput($email);
+    $password = validateInput($password);
+
+    // Create a database connection
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $database = "runsa_peter";
+
+    // Create connection
+    $conn = new mysqli($servername, $username, $password, $database);
+
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    // Prepare and execute the SQL query to insert the user into the database
+    $sql = "INSERT INTO users (firstname, lastname, matricnumber, department, level, email, password)
+            VALUES ('$firstName', '$lastName', '$matricNumber', '$department', '$level', '$email', '$password')";
+
+    if ($conn->query($sql) === TRUE) {
+        // Redirect to a success page or display a success message
+        header("Location: home.php");
+        exit();
+    } else {
+        // Display an error message
+        echo "Error: " . $sql . "<br>" . $conn->error;
+    }
+
+    // Close the database connection
+    $conn->close();
+}
+
+// Function to validate input data (e.g., remove leading/trailing spaces, prevent HTML/SQL injection)
+function validateInput($data) {
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
+?>
+
 <!DOCTYPE html>
-<html style="font-size: 16px;"><head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta charset="utf-8">
-    <meta name="keywords" content=""><meta name="description" content="">
-    <title></title>
-    <link rel="stylesheet" href="" media="screen" class="u-static-style"><link rel="stylesheet" href="nicepage.css" media="screen">
-    <script class="u-script" type="text/javascript" src="//capp.nicepage.com/assets/jquery-1.9.1.min.js" defer=""></script>
-    <script class="u-script" type="text/javascript" src="//capp.nicepage.com/0bcad38c69dcfd90c4459a4d49a057db8404895c/nicepage.js" defer=""></script>
-    <meta name="generator" content="Nicepage 5.4.4, nicepage.com"></head>
-    <body class="u-body" data-style="login-template-1" data-posts="" data-global-section-properties="{&quot;code&quot;:&quot;LOGIN&quot;,&quot;colorings&quot;:{&quot;light&quot;:[&quot;clean&quot;,&quot;clean&quot;],&quot;colored&quot;:[&quot;clean&quot;,&quot;clean&quot;,&quot;clean&quot;],&quot;dark&quot;:[&quot;clean&quot;,&quot;clean&quot;,&quot;clean&quot;]},&quot;isPreset&quot;:true}" data-source="fix" data-page-sections-style="[{&quot;name&quot;:&quot;login-form-1&quot;,&quot;margin&quot;:&quot;both&quot;,&quot;repeat&quot;:false}]" data-page-coloring-types="{&quot;light&quot;:[&quot;clean&quot;,&quot;clean&quot;],&quot;colored&quot;:[&quot;clean&quot;,&quot;clean&quot;,&quot;clean&quot;],&quot;dark&quot;:[&quot;clean&quot;,&quot;clean&quot;,&quot;clean&quot;]}" data-page-category="&quot;Login&quot;"><section class="u-align-center u-clearfix u-block-f92e-1" custom-posts-hash="T" data-section-properties="{&quot;margin&quot;:&quot;both&quot;,&quot;stretch&quot;:true}" data-id="f92e" data-style="login-form-1" id="sec-f9d3">
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>RUNSA PORTAL</title>
+	<link rel="stylesheet" href="nicepage.css" media="screen">
+    <link rel="stylesheet" href="Home-1.css" media="screen">
+    <script class="u-script" type="text/javascript" src="jquery-1.9.1.min.js" defer=""></script>
+    <script class="u-script" type="text/javascript" src="nicepage.js" defer=""></script>
+    <meta name="referrer" content="origin">
 
-
-  <div class="u-clearfix u-sheet u-block-f92e-2" style="background-image: url(file:///C:/Users/AFOLABI%20JOSEPH/Desktop/ADEOLA%20FOLDER/RUNSA%20PORTAL/images/runsaexe1.jpg); background-repeat: repeat;">
+    <link ref="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/custom.css">
+    <script src="js/respond.js"></script>
+</head>
+<body>
+	 <section class="" id=""> <div class="u-clearfix u-sheet u-block-f92e-2" style="background-image: url(images/runsaexe2.jpg); background-blend-mode: lighten; background-repeat: repeat;">
     <div class="u-form u-login-control u-block-f92e-24">
       <form action="#" method="POST" class="u-clearfix u-form-custom-backend u-form-spacing-10 u-form-vertical u-inner-form" source="custom" name="form" style="padding: 50px; border-style:groove; background-color:rgba(0, 0, 0, 0.4); color: white;">
         <div class="u-form-group u-form-name u-block-f92e-25">
-                  <h3>RESET PASSWORD</h3>
-                  <h6 style="font-weight: lighter; ">Account Login Information</h6><br>
-              <label for="username-a30d" class="u-label u-block-f92e-26">Matric Number </label>
-              <input type="text" placeholder="Enter matric number" id="name-a30d" name="number" class="u-border-grey-30 u-input u-input-rectangle u-block-f92e-27" required="">
-            </div>
-          <div class="u-form-group u-form-name u-block-f92e-25">
-          <label for="password-a30d" class="u-label u-block-f92e-26">Enter Password </label>
-          <input type="text" placeholder="Enter password" id="forgot_password-a30d" name="password" class="u-border-grey-30 u-input u-input-rectangle u-block-f92e-27" required="">
+                  <h3>REGISTER DETAILS</h3><br>
+          <label for="username-a30d" class="u-label u-block-f92e-26">First Name </label>
+          <input type="text" placeholder="Enter your first name" id="name-a30d" name="firstname" class="u-border-grey-30 u-input u-input-rectangle u-block-f92e-27" required="">
+        </div>
+        <div class="u-form-group u-form-name u-block-f92e-25">
+          <label for="username-a30d" class="u-label u-block-f92e-26">Last Name </label>
+          <input type="text" placeholder="Enter your last name" id="name-a30d" name="lastname" class="u-border-grey-30 u-input u-input-rectangle u-block-f92e-27" required="">
+        </div>
+        <div class="u-form-group u-form-name u-block-f92e-25">
+          <label for="number-a30d" class="u-label u-block-f92e-26">Matric Number </label>
+          <input type="text" placeholder="Enter your matric number" id="number-a30d" name="matricnumber" class="u-border-grey-30 u-input u-input-rectangle u-block-f92e-27" required="">
+        </div>
+        <div class="u-form-group u-form-name u-block-f92e-25">
+          <label for="name-a30d" class="u-label u-block-f92e-26">Department </label>
+          <input type="text" placeholder="Enter your department" id="name-a30d" name="department" class="u-border-grey-30 u-input u-input-rectangle u-block-f92e-27" required="">
+        </div>
+        <div class="u-form-group u-form-name u-block-f92e-25">
+          <label for="number-a30d" class="u-label u-block-f92e-26">Level </label>
+          <input type="text" placeholder="Enter your level" id="number-a30d" name="level" class="u-border-grey-30 u-input u-input-rectangle u-block-f92e-27" required="">
+        </div>
+         <div class="u-form-group u-form-name u-block-f92e-25">
+          <label for="number-a30d" class="u-label u-block-f92e-26">Email Address </label>
+          <input type="text" placeholder="Enter email address" id="number-a30d" name="email" class="u-border-grey-30 u-input u-input-rectangle u-block-f92e-27" required="">
         </div>
         <div class="u-form-group u-form-password u-block-f92e-28">
-          <label for="password-a30d" class="u-label u-block-f92e-29">Confirm Password </label>
-          <input type="text" placeholder="Confirm Password" id="forgot_password-a30d" name="password" class="u-border-grey-30 u-input u-input-rectangle u-block-f92e-30" required="">
-        </div>
+          <label for="password-a30d" class="u-label u-block-f92e-29">Enter a password </label>
+          <input type="text" placeholder="Enter password" id="password-a30d" name="password" class="u-border-grey-30 u-input u-input-rectangle u-block-f92e-30" required="">
+        </div><br>
         <div class="u-align-left u-form-group u-form-submit u-block-f92e-33">
-          <a href="index.html" class="u-btn u-btn-submit u-button-style u-block-f92e-34">SUMBIT NEW PASSWORD</a>
+          <a href="Login-Template.html" class="u-btn u-btn-submit u-button-style u-block-f92e-34">Submit</a>
           <input type="submit" value="submit" class="u-form-control-hidden">
         </div>
         <input type="hidden" value="" name="recaptchaResponse">
         <input type="hidden" id="siteId" name="siteId" value="25032582">
         <input type="hidden" id="pageId" name="pageId" value="25032588">
 
-    <a href="index.html" class="u-border-1 u-border-active-palette-2-base u-border-hover-palette-1-base u-btn u-button-style u-login-control u-login-create-account u-none u-text-palette-1-base u-block-f92e-23">< Home</a></div>
+        <div><a href="index.php" class="u-border-1 u-border-active-palette-2-base u-border-hover-palette-1-base u-btn u-button-style u-login-control u-login-forgot-password u-none u-text-palette-1-base u-block-f92e-21">< Back</a>
+    </div>
       </form>
     </div>
   </div>
   <style data-mode="XL">@media (min-width: 1200px) {
   .u-block-f92e-2 {
-    min-height: 493px;
+    min-height: 49px;
   }
 
-  h3, h6{
+  h3{
      font-family: cursive;
      padding: 0px;
   }
@@ -83,7 +166,7 @@
   }
   .u-block-f92e-23 {
     border-style: none none solid;
-    margin-top: 0px;
+    margin-top: 30px;
     margin-left: 0;
     margin-right: 0;
     margin-bottom: 0;
@@ -288,4 +371,6 @@
   }
 }</style>
 </section>
-</body></html>
+  </section>
+</body>
+</html>
